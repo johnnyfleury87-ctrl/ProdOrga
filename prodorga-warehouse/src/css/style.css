@@ -1,0 +1,237 @@
+/* ============================================= */
+/*             STYLES GÉNÉRAUX & LAYOUT           */
+/* ============================================= */
+:root {
+    --color-cat-effectif: #ffffcc;
+    --color-cat-capacite: #ccffcc;
+    --color-cat-marketing: #e6ccff;
+    --color-cat-manuel: #cce6ff;
+    --color-kpi-green: #28a745;
+    --color-kpi-orange: #fd7e14;
+    --color-kpi-red: #dc3545;
+}
+
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; background-color: #f4f7fa; color: #333; display: flex; flex-direction: column; height: 100vh; }
+header { background-color: #24292e; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+header h1 { margin: 0; font-size: 1.5rem; }
+nav#main-nav { background-color: #fff; padding: 0.5rem 2rem; border-bottom: 1px solid #e2e8f0; display: flex; gap: 0.5rem; }
+nav#main-nav button { background-color: #f7fafc; color: #2d3748; border: 1px solid #e2e8f0; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: background-color 0.2s; }
+nav#main-nav button:hover { background-color: #edf2f7; }
+.main-container { display: flex; flex-grow: 1; overflow-y: hidden; }
+main#app { flex-grow: 1; padding: 2rem; overflow-y: auto; }
+#notifications-widget { flex-basis: 300px; flex-shrink: 0; padding: 1.5rem; background-color: #f7fafc; border-left: 1px solid #e2e8f0; overflow-y: auto; display: none; }
+#notifications-widget h4 { margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem; }
+.notif-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.notif-item { font-size: 0.9rem; padding: 0.5rem; border-radius: 4px; }
+.notif-item.retour { background-color: #f0fff4; color: #276749; }
+.notif-item.absence { background-color: #fffaf0; color: #975a16; }
+.month-indicator { color: #718096; font-style: italic; }
+
+/* ============================================= */
+/*      STYLES PLANNING 28 JOURS                 */
+/* ============================================= */
+.planning-controls { margin-bottom: 1.5rem; padding: 1rem; background-color: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; gap: 1.5rem; align-items: center; }
+.planning-controls label { font-weight: 500; }
+.planning-controls select { margin-left: 0.5rem; padding: 0.4rem 0.6rem; border-radius: 4px; border: 1px solid #cbd5e0; }
+
+.planning-table-container { overflow-x: auto; }
+.planning-table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+.planning-table th, .planning-table td { border: 1px solid #e2e8f0; padding: 0.75rem; text-align: center; font-size: 0.85rem; min-width: 60px; }
+.planning-table th { background-color: #edf2f7; position: sticky; top: 0; z-index: 10; }
+.weekend-header, .weekend-cell { background-color: #f7fafc !important; }
+.planning-table td.absence-cell { font-weight: bold; color: white; }
+
+/* === Absence colors === */
+.absence-V { background-color: #a0aec0; color: white; }     /* Gris pour Vacances */
+.absence-M { background-color: #4299e1; color: white; }     /* Bleu pour Maladie */
+.absence-F { background-color: #ffe066; color: #333; }      /* Jaune pour Formation */
+.absence-R { background-color: #e53935; color: white; }     /* Rouge pour Repos */
+.absence-D { background-color: #d2b48c; color: white; }     /* Marron clair pour Divers */
+
+.collaborateur-row { cursor: pointer; transition: background-color 0.2s; }
+.collaborateur-row:hover { background-color: #e2e8f0; }
+
+.planning-table .sticky-col { position: sticky; z-index: 1; }
+.planning-table th:nth-child(1), .planning-table td:nth-child(1) { left: 0; min-width: 150px; }
+.planning-table th:nth-child(2), .planning-table td:nth-child(2) { left: 150px; }
+.planning-table th:nth-child(3), .planning-table td:nth-child(3) { left: 220px; }
+.planning-table th:nth-child(4), .planning-table td:nth-child(4) { left: 290px; }
+
+.planning-table tbody .sticky-col { background-color: #fff; }
+.planning-table thead .sticky-col { background-color: #edf2f7; z-index: 11; }
+.planning-table tfoot .sticky-col { background-color: #edf2f7; z-index: 1; }
+.collaborateur-row:hover .sticky-col { background-color: #e2e8f0; }
+
+.planning-table tfoot td { font-weight: 600; }
+.planning-table tfoot .kpi-label-col { text-align: left; font-weight: bold; min-width: 350px !important; }
+.cat-effectif > td { background-color: var(--color-cat-effectif); }
+.cat-capacite > td { background-color: var(--color-cat-capacite); }
+.cat-marketing > td { background-color: var(--color-cat-marketing); }
+.cat-manuel > td { background-color: var(--color-cat-manuel); }
+.cat-effectif > .sticky-col, .cat-capacite > .sticky-col, .cat-marketing > .sticky-col, .cat-manuel > .sticky-col { background-color: #edf2f7; }
+.kpi-green { background-color: var(--color-kpi-green) !important; color: white; }
+.kpi-orange { background-color: var(--color-kpi-orange) !important; color: white; }
+.kpi-red { background-color: var(--color-kpi-red) !important; color: white; }
+.kpi-input { width: 60px; text-align: center; border: 1px solid #ccc; border-radius: 4px; background-color: #fff; font-size: 0.85rem; }
+
+/* ============================================= */
+/*                  MODAL & POPUPS                 */
+/* ============================================= */
+#modal-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+#modal-content { background-color: white; padding: 2rem; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); min-width: 500px; max-width: 90%; max-height: 90vh; overflow-y: auto; }
+#modal-content h2 { margin-top: 0; }
+#modal-close-btn { display: block; margin-top: 1.5rem; margin-left: auto; padding: 0.5rem 1rem; cursor: pointer; }
+.modal-hidden { display: none !important; }
+.fiche-grid, .stats-grid, .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+.form-grid { grid-template-columns: auto 1fr; align-items: center; }
+#modal-content hr { border: none; border-top: 1px solid #e2e8f0; margin: 1.5rem 0; }
+.jours-travail { display: flex; justify-content: space-between; background-color: #f7fafc; padding: 0.75rem; border-radius: 6px; margin-top: 0.5rem; }
+.jours-travail label { cursor: pointer; }
+.fiche-buttons { display: flex; gap: 1rem; margin-top: 1.5rem; }
+.fiche-buttons button { flex-grow: 1; padding: 0.6rem; border: none; border-radius: 6px; background-color: #4a5568; color: white; cursor: pointer; font-size: 0.9rem; }
+.fiche-buttons button:hover { background-color: #2d3748; }
+#user-selector-container { display: flex; align-items: center; gap: 0.5rem; }
+#user-selector-container label { font-size: 0.9rem; color: #e2e8f0; }
+#user-selector { background-color: #4a5568; color: white; border: 1px solid #2d3748; border-radius: 6px; padding: 0.25rem 0.5rem; }
+#toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 2000; display: flex; flex-direction: column; gap: 10px; }
+.toast { padding: 1rem 1.5rem; border-radius: 6px; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 1; transition: opacity 0.5s, transform 0.5s; }
+.toast.toast-info { background-color: #3182ce; }
+.toast.toast-success { background-color: #38a169; }
+.toast.toast-error { background-color: #e53e3e; }
+.toast.fade-out { opacity: 0; transform: translateX(100%); }
+
+/* ============================================= */
+/*                  DEMANDES                       */
+/* ============================================= */
+.requests-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+.request-card { background-color: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.request-card p { margin: 0 0 0.5rem 0; }
+.request-actions { margin-top: 1rem; display: flex; gap: 0.5rem; }
+.action-button { flex-grow: 1; padding: 0.5rem; border: none; border-radius: 6px; color: white; cursor: pointer; font-weight: bold; }
+.action-button.validate { background-color: #38a169; }
+.action-button.refuse { background-color: #e53e3e; }
+.treated-requests-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.treated-request-item { display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 1rem; align-items: center; padding: 0.75rem 1rem; background-color: #fff; border-radius: 6px; border: 1px solid #e2e8f0; }
+.status-badge { padding: 0.2rem 0.6rem; border-radius: 12px; font-weight: bold; font-size: 0.8rem; color: white; text-align: center; }
+.status-badge.status-validé { background-color: #38a169; }
+.status-badge.status-refusé { background-color: #e53e3e; }
+.print-button { padding: 0.4rem 0.8rem; font-size: 0.8rem; background-color: #718096; color: white; border: none; border-radius: 4px; cursor: pointer; }
+
+/* ============================================= */
+/*          STYLES VUE PRODUCTION (SEMAINE DP)   */
+/* ============================================= */
+.production-view-container { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 2px solid #cbd5e0; }
+.production-view-container h3 { margin-top: 0; margin-bottom: 1rem; font-size: 1.25rem; }
+.production-table .prod-header-cell { font-weight: bold; text-align: left; background-color: #f7fafc; color: #c53030; }
+.production-table .prod-cell-value { background-color: #f7fafc; border: 1px solid #e2e8f0; border-radius: 4px; padding: 0.4rem; min-height: 20px; text-align: right; }
+.production-table td { vertical-align: middle; }
+
+/* ============================================= */
+/*          STYLES PLATEFORME PICKING            */
+/* ============================================= */
+.picking-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }
+.picking-widget { background-color: #fff; border-radius: 8px; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+.picking-widget h3 { margin-top: 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.75rem; margin-bottom: 1rem; }
+.widget-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.list-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; }
+.list-item.incident { font-size: 0.9rem; }
+.list-item.incident-haute { color: #c53030; font-weight: bold; }
+.list-item.incident-moyenne { color: #dd6b20; }
+.tache-badge { background-color: #e2e8f0; color: #4a5568; padding: 0.25rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: 500; }
+.kpi-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+.kpi-item { text-align: center; }
+.kpi-value { display: block; font-size: 2.5rem; font-weight: bold; color: #2d3748; }
+.kpi-label { font-size: 1rem; color: #718096; }
+
+/* ============================================= */
+/*       STYLES IMPORT & PLAN ENTREPÔT           */
+/* ============================================= */
+/* --- AGRANDI : la carte prend réellement la hauteur de l’écran --- */
+.picking-controls { margin-bottom: 1.5rem; }
+.file-upload-button { background-color: #2d3748; color: white; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; display: inline-block; font-weight: bold; }
+.file-upload-button:hover { background-color: #4a5568; }
+
+/* conteneur visuel du plan */
+.warehouse-map {
+  width: 100%;
+  height: 80vh;                 /* AVANT: min-height: 400px */
+  background-color: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0;                   /* AVANT: 1rem (ça grignotait de l’espace) */
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+/* fait en sorte que le SVG occupe toute la carte, sans toucher au JS/HTML */
+#warehouse-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.warehouse-rack { transition: fill 0.2s; cursor: pointer; }
+.warehouse-rack:hover { fill: #f6ad55; }
+
+/* ============================================= */
+/*       STYLES ANALYSE & HEATMAP                */
+/* ============================================= */
+/* plus d’espace vertical pour la zone de gauche (plan) */
+.picking-page-container {
+  display: grid;
+  grid-template-columns: 3fr 1fr;   /* AVANT: 2fr 1fr */
+  gap: 2rem;
+  height: calc(100vh - 120px);      /* AVANT: calc(100vh - 150px) */
+}
+
+.kpi-sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
+.rack-label { font-size: 12px; font-family: sans-serif; fill: #1a202c; font-weight: bold; pointer-events: none; }
+.warehouse-rack-group:hover .warehouse-rack { fill: #f6ad55; }
+.heatmap-controls { display: flex; justify-content: center; align-items: center; gap: 40px; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+.control-group { display: flex; flex-direction: column; gap: 8px; }
+.control-group label { font-weight: bold; font-size: 14px; color: #555; }
+.control-group select, .control-group .button-group button { padding: 8px 12px; border-radius: 5px; border: 1px solid #ccc; font-size: 14px; }
+.button-group button { background-color: #e7e7e7; cursor: pointer; border: 1px solid #ccc; }
+.button-group button.active { background-color: #c53030; color: white; border-color: #c53030; }
+#warehouse-heatmap-container { position: relative; width: 100%; margin: auto; border: 1px solid #e2e8f0; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); height: 75vh; overflow: hidden; }
+#warehouse-heatmap-container svg { width: 100%; height: 100%; display: block; }
+.heatmap-rack { position: absolute; background-color: #a0d4a2; border: 1px solid #555; box-sizing: border-box; transition: background-color 0.3s; }
+.heatmap-rack-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 10px; font-weight: bold; color: black; pointer-events: none; }
+
+.pending-badge {
+    display: none;
+    margin-left: 8px;
+    min-width: 18px;
+    padding: 2px 6px;
+    font-size: 12px;
+    line-height: 1;
+    border-radius: 999px;
+    background: #e53e3e;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ===== AJOUT: badge générique (onglet Évaluation) ===== */
+.badge {
+    display: inline-flex;
+    margin-left: 8px;
+    min-width: 18px;
+    padding: 2px 6px;
+    font-size: 12px;
+    line-height: 1;
+    border-radius: 999px;
+    background: #e53e3e;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ===== AJOUT: styles vue Évaluation ===== */
+.eval-table { width: 100%; border-collapse: collapse; background:#fff; }
+.eval-table th, .eval-table td { border:1px solid #e2e8f0; padding:.6rem; font-size:.9rem; text-align:left; }
+.eval-table th { background:#edf2f7; }
+.eval-actions { display:flex; gap:.5rem; }
+.eval-actions button { padding:.4rem .6rem; border:1px solid #cbd5e0; border-radius:6px; background:#f7fafc; cursor:pointer; }
+.eval-actions button:hover { background:#edf2f7; }
+
+.requests-table .btn-sync{margin-left:12px}

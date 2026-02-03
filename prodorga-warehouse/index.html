@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Logistique</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="src/css/style.css"/>
+
+  <!-- Lib externes (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+
+<body>
+  <header>
+    <h1>Dashboard de Pilotage Logistique</h1>
+    <div id="user-selector-container">
+      <label for="user-selector">Connecté en tant que :</label>
+      <select id="user-selector"></select>
+    </div>
+  </header>
+
+  <nav id="main-nav">
+    <button id="btn-planning-28">📅 Planning 28 Jours</button>
+    <button id="btn-semaine-dp">📊 Semaine DP</button>
+    <button id="btn-picking">🚚 Plateforme Picking</button>
+    <button id="btn-heatmap">🔥 Analyse Entrepôt</button>
+    <button id="btn-collaborateur">➕ Collaborateur</button>
+    <button id="btn-zones">⚙️ Zones</button>
+
+    <button id="btn-demandes">
+      📋 Demandes
+      <span class="pending-badge" style="display:none"></span>
+    </button>
+
+    <button id="btn-archives">📦 Archives</button>
+    <button id="btn-qr">📱 QR Demande</button>
+    <button id="btn-formulaire">📝 Formulaire</button>
+    <button id="btn-simulation">📈 Simulation KPI</button>
+
+    <!-- Évaluations + badge -->
+    <button id="nav-evaluations" class="nav-btn">
+      📝 Évaluation
+      <span id="eval-badge" class="badge" style="display:none"></span>
+    </button>
+  </nav>
+
+  <div class="main-container">
+    <main id="app"></main>
+    <aside id="notifications-widget"></aside>
+  </div>
+
+  <!-- Modale -->
+  <div id="modal-container" class="modal-hidden" aria-hidden="true">
+    <div id="modal-content" role="dialog" aria-modal="true">
+      <div id="modal-body"></div>
+      <button id="modal-close-btn" type="button">Fermer</button>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div id="toast-container"></div>
+
+  <!-- Scripts de l'application (ordre important) -->
+  <script src="src/js/utils.js"></script>
+  <script src="src/js/ui.js"></script>
+
+  <!-- Vues et modules de données (avant app.js) -->
+  <script src="src/js/plannings.js"></script>
+  <script src="src/js/collaborateurs.js"></script>
+  <script src="src/js/semaineDP.js"></script>
+  <script src="src/js/picking.js"></script>
+  <script src="src/js/demandes.js"></script>
+  <script src="src/js/heatmap.js"></script>
+  <script src="src/js/archives.js"></script>
+  <script src="src/js/kpi.js"></script>
+  <script src="src/js/simulation.js"></script>
+
+  <!-- Script principal (toujours en dernier) -->
+  <script src="src/js/app.js"></script>
+</body>
+</html>

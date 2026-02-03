@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Portail Collaborateur</title>
+  <style>
+    :root { --border:#e5e7eb; --bg:#f9fafb; --txt:#111827; }
+    body{font-family:system-ui,Arial,sans-serif;margin:0;background:var(--bg);color:var(--txt)}
+    .wrap{max-width:720px;margin:24px auto;padding:0 16px}
+    h1{font-size:1.5rem;margin:16px 0 12px}
+    .grid{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:720px){.grid{grid-template-columns:1fr 1fr}}
+    .card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px}
+    .card h2{font-size:1.1rem;margin:0 0 8px}
+    .muted{color:#6b7280;font-size:0.9rem}
+    .btn{display:inline-block;margin-top:10px;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:#111827;color:#fff;text-decoration:none;cursor:pointer}
+    .btn.sec{background:#fff;color:#111827}
+    form label{display:block;margin-top:12px}
+    input,select{width:100%;padding:8px;margin-top:4px;border:1px solid var(--border);border-radius:8px}
+    .ok{color:#065f46;margin-top:12px}
+    .err{color:#b00020;margin-top:12px}
+    .row{display:flex;gap:8px}
+    .row>*{flex:1}
+    .back{margin-top:16px}
+    .hint{font-size:.9rem;color:#6b7280}
+    .callout{background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12;padding:10px;border-radius:8px;margin-top:10px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Portail Collaborateur</h1>
+    <p class="muted">Démo: les formulaires affichent un message de confirmation, sans envoi réel.</p>
+
+    <!-- MENU -->
+    <div id="menu" class="grid">
+      <div class="card">
+        <h2>Demande d'absence</h2>
+        <p class="muted">Vacances, récupération, formation, etc.</p>
+        <button class="btn" onclick="show('form-absence')">Ouvrir</button>
+      </div>
+      <div class="card">
+        <h2>Signaler un retard</h2>
+        <p class="muted">Prévenir rapidement votre responsable.</p>
+        <button class="btn" onclick="show('form-retard')">Ouvrir</button>
+      </div>
+      <div class="card">
+        <h2>Signaler une absence (maladie)</h2>
+        <p class="muted">Avec ou sans certificat médical (CM).</p>
+        <button class="btn" onclick="show('form-maladie')">Ouvrir</button>
+      </div>
+    </div>
+
+    <!-- FORM ABSENCE -->
+    <div id="form-absence" class="card" style="display:none">
+      <h2>Demande d'absence</h2>
+      <form id="f-absence">
+        <label>ID collaborateur <input type="number" name="collabId" required /></label>
+        <label>Motif
+          <select name="type" required>
+            <option value="">-- Choisir --</option>
+            <option value="V">Vacances</option>
+            <option value="R">Récupération</option>
+            <option value="F">Formation</option>
+            <option value="A">Autre</option>
+          </select>
+        </label>
+        <div class="row">
+          <label>Début <input type="date" name="start" required /></label>
+          <label>Fin   <input type="date" name="end" required /></label>
+        </div>
+        <button class="btn" type="submit">Envoyer</button>
+        <button type="button" class="btn sec back" onclick="back()">Retour</button>
+        <div id="msg-absence"></div>
+      </form>
+    </div>
+
+    <!-- FORM RETARD -->
+    <div id="form-retard" class="card" style="display:none">
+      <h2>Signaler un retard</h2>
+      <form id="f-retard">
+        <label>ID collaborateur <input type="number" name="collabId" required /></label>
+        <label>Heure d'arrivée prévue <input type="time" name="heure" required /></label>
+        <label>Commentaire (optionnel) <input type="text" name="note" placeholder="Trafic, problème perso, etc."/></label>
+        <button class="btn" type="submit">Envoyer</button>
+        <button type="button" class="btn sec back" onclick="back()">Retour</button>
+        <div id="msg-retard"></div>
+      </form>
+    </div>
+
+    <!-- FORM MALADIE -->
+    <div id="form-maladie" class="card" style="display:none">
+      <h2>Signaler une absence (maladie)</h2>
+      <form id="f-maladie">
+        <label>ID collaborateur <input type="number" name="collabId" required /></label>
+
+        <label>Certificat médical (CM) disponible ?
+          <select id="cm-yesno" name="hasCM" required>
+            <option value="">-- Choisir --</option>
+            <option value="oui">Oui</option>
+            <option value="non">Non</option>
+          </select>
+        </label>
+
+        <div id="zone-avec-cm" style="display:none">
+          <div class="row">
+            <label>Début <input type="date" name="start" /></label>
+            <label>Fin   <input type="date" name="end" /></label>
+          </div>
+          <label>Scan du CM (PDF/JPG)
+            <input type="file" id="cm-file" accept=".pdf,.jpg,.jpeg,.png"/>
+            <div class="hint">La demande ne peut pas partir sans le CM.</div>
+          </label>
+          <div class="callout" id="cm-problem" style="display:none">
+            Problème de scan ? Envoyez votre CM à <strong><a href="mailto:CM@johnny.ch">CM@johnny.ch</a></strong>.
+          </div>
+          <div style="margin-top:8px">
+            <button type="button" class="btn sec" onclick="document.getElementById('cm-problem').style.display='block'">Problème de scan</button>
+          </div>
+        </div>
+
+        <div id="zone-sans-cm" style="display:none">
+          <div class="callout">
+            Sans CM, vous devez appeler <strong>076 404 33 09</strong> immédiatement.
+          </div>
+        </div>
+
+        <button class="btn" type="submit">Envoyer</button>
+        <button type="button" class="btn sec back" onclick="back()">Retour</button>
+        <div id="msg-maladie"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Préremplissage ID via ?id=123
+    const params = new URLSearchParams(location.search);
+    const preId = params.get('id');
+
+    function show(id){
+      document.getElementById('menu').style.display='none';
+      ['form-absence','form-retard','form-maladie'].forEach(x=>{
+        document.getElementById(x).style.display = (x===id)?'block':'none';
+        if(preId){
+          const inp = document.querySelector('#'+id+' input[name="collabId"]');
+          if(inp) inp.value = preId;
+        }
+      });
+    }
+    function back(){
+      document.getElementById('menu').style.display='grid';
+      ['form-absence','form-retard','form-maladie'].forEach(x=>document.getElementById(x).style.display='none');
+    }
+
+    // Logique CM oui/non
+    const cmSelect = document.getElementById('cm-yesno');
+    const zoneAvec = document.getElementById('zone-avec-cm');
+    const zoneSans = document.getElementById('zone-sans-cm');
+    cmSelect?.addEventListener('change', e=>{
+      const v = e.target.value;
+      zoneAvec.style.display = v==='oui' ? 'block' : 'none';
+      zoneSans.style.display = v==='non' ? 'block' : 'none';
+    });
+
+    // Soumissions (mode démo)
+    document.getElementById('f-absence').addEventListener('submit', e=>{
+      e.preventDefault();
+      document.getElementById('msg-absence').className='ok';
+      document.getElementById('msg-absence').textContent="Demande envoyée (démo).";
+      e.target.reset();
+    });
+
+    document.getElementById('f-retard').addEventListener('submit', e=>{
+      e.preventDefault();
+      document.getElementById('msg-retard').className='ok';
+      document.getElementById('msg-retard').textContent="Retard signalé (démo).";
+      e.target.reset();
+    });
+
+    document.getElementById('f-maladie').addEventListener('submit', e=>{
+      e.preventDefault();
+      const hasCM = (cmSelect.value==='oui');
+      const file = document.getElementById('cm-file').files[0];
+      const msg = document.getElementById('msg-maladie');
+      if(hasCM && !file){
+        msg.className='err';
+        msg.textContent="CM manquant. Ajoutez le fichier, ou utilisez “Problème de scan” pour obtenir l’email.";
+        return;
+      }
+      msg.className='ok';
+      msg.textContent = hasCM ? "Absence maladie envoyée avec CM (démo)." 
+                              : "Absence maladie signalée. Merci d'appeler le 076 404 33 09 (démo).";
+      e.target.reset();
+      zoneAvec.style.display='none';
+      zoneSans.style.display='none';
+      cmSelect.value='';
+      document.getElementById('cm-problem').style.display='none';
+    });
+  </script>
+</body>
+</html>
